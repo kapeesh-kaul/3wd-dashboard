@@ -38,6 +38,24 @@ with ui.nav_panel("Overview"):
     with ui.card():
         ui.card_header("An Overview of the Dataset")
 
+        ui.HTML(
+            '''
+            <section>
+                <h5>Key Columns in the Research Dataset</h5>
+                <ul>
+                    <li><strong>Title:</strong> Gives an immediate understanding of the research topic and focus.</li>
+                    <li><strong>Abstract Summary:</strong> Provides a concise overview of the research, methodology, and findings.</li>
+                    <li><strong>Authors:</strong> Highlights the contributors, which is useful for recognizing key researchers or collaborators.</li>
+                    <li><strong>Publication Year:</strong> Allows for chronological analysis and understanding of trends over time.</li>
+                    <li><strong>Journal/Conference:</strong> Indicates the quality and domain relevance of the research.</li>
+                    <li><strong>3-Way Decision Methodology:</strong> Captures the core technique or approach proposed in the research.</li>
+                    <li><strong>Domains of Application:</strong> Provides insight into where the methodology is applied, showcasing its real-world relevance.</li>
+                    <li><strong>Key Findings:</strong> Summarizes the most important results, offering immediate value from the paper.</li>
+                </ul>
+            </section>
+            '''
+        )
+
         @render.data_frame
         def papers_table():
             # return render.DataGrid(papers.iloc[:, 1:].head())
@@ -75,6 +93,24 @@ with ui.nav_panel("Insights"):
                 fig = px.line(x=papers_per_year.index, y=papers_per_year.values, labels={'x': 'Year', 'y': 'Number of Papers'})
                 fig.update_layout(template='simple_white')
                 return fig
+            
+            ui.HTML(
+                '''
+                <section id="graph-analysis">
+                    <h5>Graph Analysis</h5>
+                    <p>
+                        The graph illustrates the number of research papers published over time. The x-axis represents the <strong>Publication Year</strong>, while the y-axis shows the <strong>Number of Papers</strong>.
+                    </p>
+                    <p>
+                        From 2005 to around 2015, the publication rate remained steady with minimal activity. However, after 2015, there is a noticeable upward trend, indicating a growing interest in the subject. This trend peaks sharply in the early 2020s, showcasing a significant increase in research contributions during this period.
+                    </p>
+                    <p>
+                        After the peak, a slight decline is observed nearing 2025, which could indicate a plateau in research activity or the need for further data collection for recent years.
+                    </p>
+                </section>
+
+                '''
+            )
 
         with ui.card():
             ui.card_header("Number of Papers per Conference")
@@ -85,12 +121,32 @@ with ui.nav_panel("Insights"):
                 fig.update_layout(template='simple_white')
                 return fig
             
+            ui.HTML(
+                '''
+                <section id="journal-distribution">
+                    <h5>Journal and Conference Distribution</h5>
+                    <p>
+                        The chart shows the number of research papers published across different journals and conferences. 
+                        <strong>Information Sciences</strong> has the highest number of publications, followed by 
+                        <strong>Knowledge-Based Systems</strong> and <strong>ICCBD 2024 Proceedings</strong>. 
+                        Other journals have a smaller but consistent presence, highlighting the diverse domains where this research is published.
+                    </p>
+                </section>
+
+                '''
+            )
+            
     ui.HTML('''
         <div align = 'center'>
             <h4>Sentiment Analysis</h4>
         </div>
+        <p>
+            Analyzing sentiment polarity helps gauge the general perception of 3-way feasibility, identifying whether the methodology is viewed positively, neutrally, or negatively. 
+            Positive sentiments indicate confidence and highlight strengths, while neutral or negative sentiments reveal skepticism or areas for improvement. This analysis provides insights into the methodology’s reception across various applications, guiding researchers to address concerns and refine the approach. By tracking sentiment trends over time and across domains, 
+            researchers can better understand its evolving acceptance and potential, making data-driven decisions to enhance its applicability and effectiveness.
+            </p>
     ''')
-    with ui.layout_columns():    
+    with ui.layout_columns():
         with ui.card():
             ui.card_header("Sentiment polarity of Abstracts")
             @render_widget
@@ -108,6 +164,7 @@ with ui.nav_panel("Insights"):
                 return fig
         with ui.card():
             ui.card_header("Sentiment polarity of 3-Way Feasibility")
+            
             @render_widget
             def plot_3way_feasibility_polarity():
                 def get_sentiment(text):
@@ -121,6 +178,20 @@ with ui.nav_panel("Insights"):
                 fig = px.histogram(papers, x='Sentiment', nbins=20, labels={'x': 'Sentiment Polarity', 'y': 'Number of Papers'})
                 fig.update_layout(template='simple_white')
                 return fig
+            
+            ui.HTML(
+                '''
+                <section id="sentiment-polarity">
+                    <h5>Sentiment Polarity of 3-Way Feasibility</h5>
+                    <p>
+                        The chart illustrates the distribution of sentiment polarity in the analysis of 3-way feasibility. 
+                        Most data points cluster around positive sentiment values, with a notable peak at approximately 0.6, indicating predominantly optimistic assessments.
+                        Smaller clusters are observed at lower sentiment values, reflecting more neutral or slightly positive views.
+                    </p>
+                </section>
+
+                '''
+            )
             
         with ui.card():
             ui.card_header("Sentiment polarity of Future Work")
